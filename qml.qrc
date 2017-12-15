@@ -3,7 +3,12 @@
         <file>main.qml</file>
         <file>Marker.qml</file>
         <file>MapComponent.qml</file>
-        <file>marker.png</file>
         <file>ValueSlider.qml</file>
+        <file>MainMenuBar.qml</file>
+        <file>TopBarControls.qml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>marker.png</file>
+        <file>logo.png</file>
     </qresource>
 </RCC>

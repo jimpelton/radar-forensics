@@ -21,42 +21,54 @@
 ///////////////////////////////////////////////////////////////////////////////
 class Record : public QObject {
     Q_OBJECT
-//    Q_PROPERTY(QVarantMap attrs READ attributes)
-//    Q_PROPERTY(double ts READ timestamp)
 
 public:
+    ///////////////////////////////////////////////////////////////////////////////
     explicit Record(QObject *parent = nullptr)
-        : QObject(parent)
-        , ts(0)
-        , c(QColor(255,255,255,255))
+        : Record(QJsonObject(), parent)
     {
 
     }
 
 
+    ///////////////////////////////////////////////////////////////////////////////
     explicit Record(QJsonObject const &json, QObject *parent = nullptr)
         : Record(json, QColor(255,255,255,255), parent)
     {
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////
     explicit Record(QJsonObject const &json, QColor const &c, QObject *parent = nullptr)
         : QObject(parent)
+        , attrs()
         , c(c)
+        , ts(0)
     {
        attrs = json.toVariantMap();
        ts = attrs["timestamp"].toReal();
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////
     Record(Record const &o)
         : QObject(o.parent())
-        , attrs{ o.attrs }
+        , attrs( o.attrs )
         , c( o.c )
         , ts( o.ts )
     {
     }
 
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    virtual ~Record() {}
+
+
+    ///////////////////////////////////////////////////////////////////////////////
     Record&
-    operator=(Record const &o) {
+    operator=(Record const &o)
+    {
         if (this != &o) {
             this->attrs = o.attrs;
             this->c = o.c;
@@ -65,20 +77,26 @@ public:
         return *this;
     }
 
-    virtual ~Record() {}
 
+    ///////////////////////////////////////////////////////////////////////////////
     QVariantMap
     attributes() const {
         return attrs;
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////
     QColor const &
-    color() const {
+    color() const
+    {
         return c;
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////
     double
-    timestamp() const {
+    timestamp() const
+    {
         return ts;
     }
 
@@ -93,23 +111,49 @@ private:
 class RecordsModel : public QAbstractListModel {
     Q_OBJECT
 public:
+    ///////////////////////////////////////////////////////////////////////////////
     enum RecordRoles {
         AttrsRole = Qt::UserRole + 1,
         ColorRole
     };
 
+
+    ///////////////////////////////////////////////////////////////////////////////
     explicit RecordsModel(QObject *parent = nullptr);
 
-    void addRecord(Record const &r);
-    void addRecords(const QVector<Record> &v);
-    void clear();
 
-    int rowCount(QModelIndex const &parent = QModelIndex()) const override;
+    ///////////////////////////////////////////////////////////////////////////////
+    virtual ~RecordsModel();
 
-    QVariant data(QModelIndex const &index, int role = Qt::DisplayRole) const override;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    addRecord(Record const &r);
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    addRecords(const QVector<Record> &v);
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    clear();
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    int
+    rowCount(QModelIndex const &parent = QModelIndex()) const override;
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    QVariant
+    data(QModelIndex const &index, int role = Qt::DisplayRole) const override;
+
 
 protected:
-    QHash<int, QByteArray> roleNames() const override;
+    QHash<int, QByteArray>
+    roleNames() const override;
 
 private:
     QList<Record> m_records;
@@ -120,25 +164,55 @@ class ParseJson : public QObject
 {
     Q_OBJECT
 public:
+
+    ///////////////////////////////////////////////////////////////////////////////
     explicit ParseJson(QObject *parent = 0);
+
+
+    ///////////////////////////////////////////////////////////////////////////////
     virtual ~ParseJson();
 
-    Q_INVOKABLE void parse(QUrl file);
+    ///////////////////////////////////////////////////////////////////////////////
+    Q_INVOKABLE void
+    parse(QUrl file);
 
-    void setModel(QSharedPointer<RecordsModel> model);
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    setModel(QSharedPointer<RecordsModel> model);
 
 signals:
 
 public slots:
-    void addNextRecord();
-    void startTimeChanged(double percent);   ///< set percent into total runtime
-    void endTimeChanged(double percent);
-    void stopTimer();
-    void startTimer();
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    addNextRecord();
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    startTimeChanged(double percent);   ///< set percent into total runtime
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    endTimeChanged(double percent);
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    stopTimer();
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    void
+    startTimer();
 
 private:
     QString m_fileName;
     QVector<Record> m_records;
+    QHash<QString, QColor> m_trackColors;
     QSharedPointer<RecordsModel> m_model;
     QTimer m_timer;
     size_t m_index;

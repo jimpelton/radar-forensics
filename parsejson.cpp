@@ -16,8 +16,13 @@ RecordsModel::RecordsModel(QObject *parent)
 
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
-void RecordsModel::addRecord(const Record &r)
+RecordsModel::~RecordsModel() {}
+
+///////////////////////////////////////////////////////////////////////////////
+void
+RecordsModel::addRecord(const Record &r)
 {
 //    qDebug() << "  Adding a record: " << r.attributes();
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -25,12 +30,18 @@ void RecordsModel::addRecord(const Record &r)
     endInsertRows();
 }
 
-void RecordsModel::addRecords(QVector<Record> const &v)
+
+///////////////////////////////////////////////////////////////////////////////
+void
+RecordsModel::addRecords(QVector<Record> const &v)
 {
 
 }
 
-void RecordsModel::clear()
+
+///////////////////////////////////////////////////////////////////////////////
+void
+RecordsModel::clear()
 {
     qDebug() << "Removing all records.";
     beginResetModel();
@@ -40,14 +51,16 @@ void RecordsModel::clear()
 
 
 ///////////////////////////////////////////////////////////////////////////////
-int RecordsModel::rowCount(QModelIndex const &parent) const
+int
+RecordsModel::rowCount(QModelIndex const &parent) const
 {
     Q_UNUSED(parent);
     return m_records.size();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-QVariant RecordsModel::data(QModelIndex const &index, int role) const {
+QVariant
+RecordsModel::data(QModelIndex const &index, int role) const {
     if (index.row() < 0 || index.row() >= m_records.size()) {
         return QVariant();
     }
@@ -62,7 +75,8 @@ QVariant RecordsModel::data(QModelIndex const &index, int role) const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-QHash<int, QByteArray> RecordsModel::roleNames() const {
+QHash<int, QByteArray>
+RecordsModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[AttrsRole] = "attrs";
     roles[ColorRole] = "color";
@@ -86,16 +100,17 @@ ParseJson::~ParseJson()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void ParseJson::addNextRecord(){
+void
+ParseJson::addNextRecord(){
     if (m_index < m_records.size()){
-//        qDebug() << "adding index: " << m_index;
         m_model->addRecord(m_records[m_index++]);
     }
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
-void ParseJson::startTimeChanged(double percent)
+void
+ParseJson::startTimeChanged(double percent)
 {
     qDebug() << "startTimeChanged";
     stopTimer();
@@ -113,7 +128,8 @@ void ParseJson::startTimeChanged(double percent)
 
 
 ///////////////////////////////////////////////////////////////////////////////
-void ParseJson::endTimeChanged(double percent)
+void
+ParseJson::endTimeChanged(double percent)
 {
     qDebug() << "endTimeChanged";
     stopTimer();
@@ -129,13 +145,15 @@ void ParseJson::endTimeChanged(double percent)
 //    }
 }
 
-void ParseJson::stopTimer()
+void
+ParseJson::stopTimer()
 {
     m_timer.stop();
 }
 
 
-void ParseJson::startTimer()
+void
+ParseJson::startTimer()
 {
    if (m_records.size() > 0){
        m_model->clear();
@@ -146,13 +164,15 @@ void ParseJson::startTimer()
 
 namespace {
     ///////////////////////////////////////////////////////////////////////////////
-    bool byTimeStamp(Record const &lhs, Record const &rhs) {
+    bool
+    byTimeStamp(Record const &lhs, Record const &rhs) {
         return lhs.timestamp() < rhs.timestamp();
     }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void ParseJson::parse(QUrl fileUrl)
+void
+ParseJson::parse(QUrl fileUrl)
 {
     qDebug() << fileUrl.toLocalFile();
     QFile f(fileUrl.toLocalFile());
@@ -174,7 +194,7 @@ void ParseJson::parse(QUrl fileUrl)
     for(; it != rows.end(); ++it) {
         QJsonObject obj = it->toObject();
         if (obj.value("id").toString().startsWith("_design")){
-            qDebug() << "Skipping design document.";
+            qInfo() << "Skipping design document.";
             continue;
         }
         QJsonValue doc = obj.value("doc");
@@ -186,7 +206,8 @@ void ParseJson::parse(QUrl fileUrl)
 }
 
 
-void ParseJson::setModel(QSharedPointer<RecordsModel> model){
+void
+ParseJson::setModel(QSharedPointer<RecordsModel> model){
     m_model = model;
 }
 

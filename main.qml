@@ -47,6 +47,8 @@ import QtQuick.Dialogs 1.2
 import QtPositioning 5.6
 import QtQuick.Controls 2.0 as C2
 
+import QtQuick.Dialogs 1.3
+
 ApplicationWindow {
     id: appWindow
     width: 1280
@@ -58,78 +60,38 @@ ApplicationWindow {
         id: map
         plugin: Plugin {
             id: osmPlugin
-            name: "mapbox"
+            name: "mapboxgl"
             // specify plugin parameters if necessary
             PluginParameter {
-                name: "mapbox.access_token"
+                name: "mapboxgl.access_token"
                 value: "pk.eyJ1IjoiYmxhY2tzYWdldGVjaCIsImEiOiJnajZJbG1zIn0.h_oq3Rv4WoHHPSNWnQOnow"
             }
         }
     } // MapComponent: map
 
+//        Image{
+//            id: bsLogo
+//            anchors.top: parent.top
+//            anchors.left: parent.left
+//            width: bsLogo.width * 0.5
+//            height: bsLogo.height * 0.5
 
+//            source: "images/logo.png"
+//        }
 
-    menuBar: MenuBar {
-        id: mainMenuBar
+    TopBarControls{
+        id: topBarControls
+    }
 
-        Menu {
-            id: fileMenu
-            title: qsTr("File")
-            MenuItem{
-                text: qsTr("Open")
-                onTriggered: fileDialog.open()
+    menuBar: MainMenuBar{
+        map: map
+        fileDialog: FileDialog {
+            id: fileDialog
+            visible: false
+            title: "Choose up a file"
+            onAccepted: {
+                parser.parse(fileUrl)
             }
-
-            MenuItem {
-                text: qsTr("Quit")
-                onTriggered: {
-                    console.log("Goodbye!")
-                    Qt.quit()
-                }
-            }
-        }
-
-        Menu {
-            id: mapTypeMenu
-            title: qsTr("Map Type")
-
-            function createMenu(map)
-            {
-                clear()
-                for (var i = 0; i<map.supportedMapTypes.length; i++) {
-                    createMapTypeMenuItem(map.supportedMapTypes[i]).checked =
-                            (map.activeMapType === map.supportedMapTypes[i]);
-                }
-            }
-
-            function createMapTypeMenuItem(mapType)
-            {
-                console.log("Creating " + mapType);
-                var item = addItem(mapType.name);
-                item.checkable = true;
-                item.triggered.connect(function(){
-                    map.selectMapType(mapType);
-                    for(var i = 0; i < mapTypeMenu.items.length; i++) {
-                        if (mapTypeMenu.items[i] !== item) {
-                            mapTypeMenu.items[i].checked = false;
-                        }
-                    }
-                });
-                return item;
-            }
-            Component.onCompleted: {
-                createMenu(map);
-            }
-
-        } // Menu : mapTypeMenu
-    } // menuBar
-
-    FileDialog {
-        id: fileDialog
-        visible: false
-        title: "Choose up a file"
-        onAccepted: {
-            parser.parse(fileUrl)
         }
     }
 
