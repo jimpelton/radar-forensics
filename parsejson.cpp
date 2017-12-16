@@ -112,7 +112,6 @@ ParseJson::addNextRecord(){
 void
 ParseJson::startTimeChanged(double percent)
 {
-    qDebug() << "startTimeChanged";
     stopTimer();
     m_model->clear();
     size_t idx = float(m_records.size() * percent) + 0.5f;

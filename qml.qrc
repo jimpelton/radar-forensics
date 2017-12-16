@@ -6,6 +6,7 @@
         <file>ValueSlider.qml</file>
         <file>MainMenuBar.qml</file>
         <file>TopBarControls.qml</file>
+        <file>FadeButton.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>marker.png</file>

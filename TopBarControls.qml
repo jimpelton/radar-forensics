@@ -10,149 +10,162 @@ RowLayout{
     spacing: 10
     layoutDirection: Qt.LeftToRight
 
-    property real buttonOpacity: 0.8
-    property real buttonBorderWidth: 3
 
 
     Row{
-//        anchors.top: parent.top
-//        anchors.left: parent.left
         Image {
             id: bsLogo
             source: "images/logo.png"
-//            anchors.top: parent.top
-//            anchors.left: parent.left
-//            scale:  0.1
-//            fillMode: Image.PreserveAspectFit
-//            verticalAlignment: Image.AlignTop
-//            horizontalAlignment: Image.AlignLeft
-
         }
-
     }
 
     Row {
         spacing: 10
 
-        Button {
+        FadeButton {
             id: csvButton
-            text: "CSV"
-            background: Rectangle {
-            anchors.centerIn: parent.Center
-            implicitWidth: 100
-            implicitHeight: 40
-            opacity: buttonOpacity
-            border.color: csvButton.down ? "#17a81a" : "#21be2b"
-            border.width: buttonBorderWidth
-            radius: 2
+            buttonText: "CSV"
         }
-//            onClicked: {
-
-//            }
-        }
-
-        Button{
+        FadeButton {
             id: centeringButton
-            property bool on: true
-            text: on ? "Disable Centering" : "Enable Centering"
-            background: Rectangle {
-                anchors.centerIn: parent.Center
-                implicitWidth: 105
-                implicitHeight: 40
-                opacity: buttonOpacity
-                color: centeringButton.on ? "blue" : "white"
-                border.color: centeringButton.down ? "#17a81a" : "#21be2b"
-                border.width: buttonBorderWidth
-                radius: 2
-            }
-
+            buttonText: "Enable Centering"
             onClicked: {
-                centeringButton.on = ! centeringButton.on
+                console.log("Clicked it!");
             }
-
         }
-
-        Button{
-            id: geoLocateTracker
-            text: "Geolocate"
-            background: Rectangle {
-            anchors.centerIn: parent.Center
-            implicitWidth: 100
-            implicitHeight: 40
-            opacity: buttonOpacity
-            border.color: geoLocateTracker.down ? "#17a81a" : "#21be2b"
-            border.width: buttonBorderWidth
-            radius: 2
+        FadeButton {
+            id: geoLocateTrackerButton
+            buttonText: "Geolocate"
         }
-
-        }
-
-        Button {
-           id: clearButton
-           text: "Clear Markers"
-           background: Rectangle {
-            anchors.centerIn: parent.Center
-            implicitWidth: 100
-            implicitHeight: 40
-            opacity: buttonOpacity
-            border.color: clearButton.down ? "#17a81a" : "#21be2b"
-            border.width: buttonBorderWidth
-            radius: 2
-        }
-
-
+        FadeButton {
+            id: clearButton
+            buttonText: "Clear Markers"
         }
     }
-
-    Row{
+    Row {
         spacing: 0
-        Button{
-          id: liveButton
-          text: "Live"
-          background: Rectangle {
-            anchors.centerIn: parent.Center
-            implicitWidth: 100
-            implicitHeight: 40
-            opacity: buttonOpacity
-            border.color: liveButton.down ? "#17a81a" : "#21be2b"
-            border.width: buttonBorderWidth
-            radius: 2
+        FadeButton {
+            id: liveButton
+            buttonText: "Live"
         }
-
-
-        }
-
-        Button{
+        FadeButton {
             id: pauseButton
-            text: "Pause"
-            background: Rectangle {
-                anchors.centerIn: parent.Center
-                implicitWidth: 100
-                implicitHeight: 40
-                opacity: buttonOpacity
-                border.color: pauseButton.down ? "#17a81a" : "#21be2b"
-                border.width: buttonBorderWidth
-                radius: 2
-            }
-
-
-
+            buttonText: "Pause"
         }
-
-        Button {
+        FadeButton {
             id: searchButton
-            text: "Search"
-            background:  Rectangle {
-                anchors.centerIn: parent.Center
-                implicitWidth: 100
-                implicitHeight: 40
-                opacity: buttonOpacity
-                border.color: searchButton.down ? "#17a81a" : "#21be2b"
-                border.width: buttonBorderWidth
-                radius: 2
-            }
-
-
+            buttonText: "Search"
         }
     }
-} // Row
+}
+
+//        Button{ id: centeringbutton
+//            property bool on: true
+//            text: on ? "Disable Centering" : "Enable Centering"
+//            background: Rectangle {
+//                anchors.centerIn: parent.Center
+//                implicitWidth: 105
+//                implicitHeight: 40
+//                opacity: centeringButton.hovered ? buttonOpacity2 : buttonOpacity
+//                color: centeringButton.on ? "#FFFFaa" : "white"
+//                border.color: centeringButton.hovered ? buttonBorderColor1 : buttonBorderColor2
+//                border.width: buttonBorderWidth
+//                radius: 2
+//            }
+
+//            onClicked: {
+//                centeringButton.on = ! centeringButton.on
+//            }
+
+//        }
+
+//        Button{
+//            id: geoLocateTracker
+//            text: "Geolocate"
+//            background: Rectangle {
+//            anchors.centerIn: parent.Center
+//            implicitWidth: 100
+//            implicitHeight: 40
+//            opacity: geoLocateTracker.hovered ? buttonOpacity2 : buttonOpacity
+//            border.color: geoLocateTracker.hovered ? buttonBorderColor1 : buttonBorderColor2
+//            border.width: buttonBorderWidth
+//            radius: 2
+//        }
+
+//        }
+
+//        Button {
+//           id: clearButton
+//           text: "Clear Markers"
+//           background: Rectangle {
+//            anchors.centerIn: parent.Center
+//            implicitWidth: 100
+//            implicitHeight: 40
+//            opacity: clearButton.hovered ? buttonOpacity2 : buttonOpacity
+//            border.color: clearButton.hovered ? buttonBorderColor1 : buttonBorderColor2
+//            border.width: buttonBorderWidth
+//            radius: 2
+//        }
+
+
+//        }
+//    }
+
+//    Row{
+//        spacing: 0
+//        Button{
+//          id: liveButton
+//          text: "Live"
+//          background: Rectangle {
+//            anchors.centerIn: parent.Center
+//            implicitWidth: 100
+//            implicitHeight: 40
+//            opacity: liveButton.hovered ? buttonOpacity2 : buttonOpacity
+//            border.color: liveButton.hovered ? buttonBorderColor1 : buttonBorderColor2
+//            border.width: buttonBorderWidth
+//            radius: 2
+//        }
+
+
+//        }
+
+//        Button{
+//            id: pauseButton
+//            text: "Pause"
+//            background: Rectangle {
+//                anchors.centerIn: parent.Center
+//                implicitWidth: 100
+//                implicitHeight: 40
+//                opacity: pauseButton.hovered ? buttonOpacity2 : buttonOpacity
+//                border.color: pauseButton.hovered ? buttonBorderColor1 : buttonBorderColor2
+//                border.width: buttonBorderWidth
+//                radius: 2
+//                Behavior on opacity {
+//                    OpacityAnimator {
+//                        from: pauseButton.hovered ? buttonOpacity2 : buttonOpacity
+//                        to: pauseButton.hovered ? buttonOpacity : buttonOpacity2
+//                        duration: 200
+//                    }
+//                }
+//            }
+
+
+
+//        }
+
+//        Button {
+//            id: searchButton
+//            text: "Search"
+//            background:  Rectangle {
+//                anchors.centerIn: parent.Center
+//                implicitWidth: 100
+//                implicitHeight: 40
+//                opacity: searchButton.hovered ? buttonOpacity2 : buttonOpacity
+//                border.color: searchButton.hovered ? buttonBorderColor1 : buttonBorderColor2
+//                border.width: buttonBorderWidth
+//                radius: 2
+//            }
+
+
+//        }
+//    }
