@@ -1,79 +1,70 @@
-#ifndef PARSEJSON_H
-#define PARSEJSON_H
+#ifndef RECORDSMODEL_H
+#define RECORDSMODEL_H
 
 #include "record.h"
-#include "recordsmodel.h"
-
 
 #include <QObject>
-#include <QMap>
+#include <QAbstractListModel>
+#include <QModelIndex>
+#include <QVariant>
+
 #include <QVector>
-#include <QSharedPointer>
 #include <QHash>
-#include <QString>
-#include <QTimer>
-#include <QColor>
-#include <QUrl>
+#include <QByteArray>
+#include <QList>
 
 
 ///////////////////////////////////////////////////////////////////////////////
-class ParseJson : public QObject
-{
+class RecordsModel : public QAbstractListModel {
     Q_OBJECT
 public:
-
     ///////////////////////////////////////////////////////////////////////////////
-    explicit ParseJson(QObject *parent = 0);
-
-
-    ///////////////////////////////////////////////////////////////////////////////
-    virtual ~ParseJson();
-
-    ///////////////////////////////////////////////////////////////////////////////
-    Q_INVOKABLE void
-    parse(QUrl file);
+    enum RecordRoles {
+        AttrsRole = Qt::UserRole + 1,
+        ColorRole
+    };
 
 
     ///////////////////////////////////////////////////////////////////////////////
-    void
-    setModel(QSharedPointer<RecordsModel> model);
+    explicit RecordsModel(QObject *parent = nullptr);
 
-signals:
-
-public slots:
 
     ///////////////////////////////////////////////////////////////////////////////
-    void
-    addNextRecord();
+    virtual ~RecordsModel();
 
 
     ///////////////////////////////////////////////////////////////////////////////
     void
-    startTimeChanged(double percent);   ///< set percent into total runtime
+    addRecord(Record &r);
 
 
     ///////////////////////////////////////////////////////////////////////////////
     void
-    endTimeChanged(double percent);
+    addRecords(QVector<Record> const &v);
 
 
     ///////////////////////////////////////////////////////////////////////////////
     void
-    stopTimer();
+    clear();
 
 
     ///////////////////////////////////////////////////////////////////////////////
-    void
-    startTimer();
+    int
+    rowCount(QModelIndex const &parent = QModelIndex()) const override;
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    QVariant
+    data(QModelIndex const &index, int role = Qt::DisplayRole) const override;
+
+
+protected:
+    QHash<int, QByteArray>
+    roleNames() const override;
 
 private:
-    QString m_fileName;
-    QVector<Record> m_records;
-    QHash<QString, QColor> m_trackColors;
-    QSharedPointer<RecordsModel> m_model;
-    QTimer m_timer;
-    size_t m_index;
-    size_t m_endIndex;
+    QList<Record> m_records;
 };
 
-#endif // PARSEJSON_H
+
+#endif // RECORDSMODEL_H

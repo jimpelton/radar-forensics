@@ -26,20 +26,17 @@ Map {
                 border.color: "white"
                 border.width: 1
 
-//                Text{
-//                    id: markerText
-//                    visible: true
-//                    y: image.height/10
-//                    width: image.width
-//                    color: "black"
-//                    font.bold: true
-//                    font.pixelSize: 10
-//                    horizontalAlignment: Text.AlignHCenter
-////                    text: model.attrs.sensorName + '\n' + model.attrs.group
-////                     Component.onCompleted: {
-////                        text = "hello!"
-////                     }
-//                }
+                Text{
+                    id: markerText
+                    visible: true
+                    y: image.height/10
+                    width: image.width
+                    color: "black"
+                    font.bold: true
+                    font.pixelSize: 10
+                    horizontalAlignment: Text.AlignHCenter
+                    text: model.attrs.text
+                }
             }
 
 
